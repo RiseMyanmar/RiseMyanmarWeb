@@ -12,7 +12,7 @@
 
 .map-container {
   width: 100%;
-  height: 50vh;
+  height: 500px;
   max-width: 800px;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -23,7 +23,6 @@
 } 
  
 
-
 /* Ensure the attribution tags are positioned at the bottom-right corner */
 .map-container .mapboxgl-ctrl-attrib {
   position: absolute;
@@ -32,7 +31,7 @@
   background: rgba(255, 255, 255, 0.8);
   padding: 0.5rem;
   font-size: 0.8rem;
-  border-radius: 5px;
+  border-radius: 5px 0 0 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -49,6 +48,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-top: 0.5rem;
 }
 
 .reset-button:hover {

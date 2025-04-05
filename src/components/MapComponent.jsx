@@ -7,8 +7,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibXBhaW5nIiwiYSI6ImNtOTRtYnlydzExY24yd29qMTQzZ
 
 const MapComponent = () => {
   const mapContainerRef = useRef(null);
-  const mapInstanceRef = useRef(null); // Use useRef to store the map instance
-
+  const mapInstanceRef = useRef(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,11 +18,12 @@ const MapComponent = () => {
       zoom: 10,
     });
 
+    // Assign the map instance to the ref
+    mapInstanceRef.current = mapInstance;
+
     mapInstance.on('load', () => {
       setLoading(false);
     });
-
-    
 
     return () => mapInstance.remove();
   }, []);
@@ -31,6 +31,8 @@ const MapComponent = () => {
   const resetView = () => {
     if (mapInstanceRef.current) {
       mapInstanceRef.current.flyTo({ center: [96.1345, 16.8661], zoom: 10 });
+    } else {
+      console.error("Map instance is not initialized.");
     }
   };
 
@@ -40,7 +42,7 @@ const MapComponent = () => {
       <p>Explore the affected areas and key locations.</p>
       {loading && <div className="loading-spinner">Loading map...</div>}
       <div ref={mapContainerRef} className="map-container" ></div>
- <button className="reset-button" onClick={resetView}>Reset View</button>
+      <button className="reset-button" onClick={resetView}>Reset View</button>
     </div>
   );
 };
