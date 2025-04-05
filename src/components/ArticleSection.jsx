@@ -1,22 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ArticleCard from "./ArticleCard";
 
 function ArticleSection() {
-  // Later this can come from a backend
-  const articles = [
-    {
-      title: "Aftershock Hits Mandalay",
-      summary: "A 5.2 magnitude aftershock struck near Mandalay just days after the initial quake..."
-    },
-    {
-      title: "Volunteers Set Up Aid Stations",
-      summary: "Local volunteers are organizing temporary shelters and medical camps in Sagaing region."
-    },
-    {
-      title: "Donations Reach $500K",
-      summary: "Thanks to global support, donations have crossed the half-million mark within 48 hours."
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    async function fetchNews() {
+      const res = await fetch(
+        `https://gnews.io/api/v4/search?q=myanmar%20earthquake&lang=en&country=us&max=10&apikey=48bfa8a4c588aa2886ca7e33d0ba70a9`
+      );
+      const data = await res.json();
+
+      const seenLinks = new Set();
+      const uniqueArticles = [];
+
+      for (const item of data.articles) {
+        if (item.image && !seenLinks.has(item.url)) {
+          seenLinks.add(item.url);
+          uniqueArticles.push({
+            title: item.title,
+            summary: item.description,
+            image: item.image,
+            link: item.url
+          });
+        }
+
+        if (uniqueArticles.length === 4) break;
+      }
+
+      setArticles(uniqueArticles);
     }
-  ];
+
+    fetchNews();
+  }, []);
 
   return (
     <div style={{ marginTop: "2rem" }}>
@@ -27,6 +43,8 @@ function ArticleSection() {
             key={index}
             title={article.title}
             summary={article.summary}
+            image={article.image}
+            link={article.link}
           />
         ))}
       </div>
