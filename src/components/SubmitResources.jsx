@@ -3,7 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 function SubmitResource() {
   const { isAuthenticated, loginWithRedirect, user } = useAuth0();
-
+  const { logout } = useAuth0();
   if (!isAuthenticated) {
     return (
       <div style={{ textAlign: "center", marginTop: "2rem" }}>
@@ -48,6 +48,20 @@ function SubmitResource() {
         }}>
           Submit Report
         </button>
+        {isAuthenticated && (
+        <button
+          onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+        style={{
+          padding: "0.5rem 1rem",
+          backgroundColor: "#dc3545",
+          color: "#fff",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer"
+        }}>
+          Log Out
+        </button>
+        )}
       </form>
     </div>
   );
