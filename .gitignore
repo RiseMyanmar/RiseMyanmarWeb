@@ -19,3 +19,6 @@ coverage
 
 # system files
 Thumbs.db
+
+# Environment variables
+.env

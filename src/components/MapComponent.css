@@ -24,7 +24,7 @@
  
 
 /* Ensure the attribution tags are positioned at the bottom-right corner */
-.map-container .mapboxgl-ctrl-attrib {
+/* .map-container .mapboxgl-ctrl-attrib {
   position: absolute;
   bottom: 0;
   right: 0;
@@ -33,7 +33,7 @@
   font-size: 0.8rem;
   border-radius: 5px 0 0 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+} */
 
 .loading-spinner {
   font-size: 1.2rem;
