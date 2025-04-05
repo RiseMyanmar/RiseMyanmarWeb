@@ -2,6 +2,9 @@ import React from "react";
 import StatsPanel from "./components/StatsPanel";
 import ArticleSection from "./components/ArticleSection";
 import DonationSection from "./components/DonationSection";
+import MapComponent from "./components/MapComponent";
+import './App.css';
+
 
 function App() {
   return (
@@ -22,6 +25,7 @@ function App() {
         {/* Main content: Articles and Donations */}
         <main style={{ flex: "3 1 600px", display: "flex", flexDirection: "column", gap: "2rem" }}>
           <ArticleSection />
+          <MapComponent />
           <DonationSection />
         </main>
         {/* Sidebar: Stats */}
