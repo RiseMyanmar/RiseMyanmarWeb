@@ -18,25 +18,39 @@ function App() {
         <p style={{ color: "#555" }}>Earthquake Relief and Recovery Tracker</p>
       </header>
 
-      {/* Layout: Side stats + content */}
-      <div style={{ display: "flex", justifyContent: "space-around" }}>
-        {/* Main content: Articles and Donations */}
-        <main
-          style={{
-            flex: "3 1 600px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "2rem",
-          }}
-        >
-          <ArticleSection />
-          <DonationSection />
-        </main>
-        {/* Sidebar: Stats */}
-        <aside style={{ flex: "0.5 0.5 250px" }}>
-          <StatsPanel deaths={3848} injuries={4725} missing={708} />
-        </aside>
-      </div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "2rem",
+                flexWrap: "wrap",
+              }}
+            >
+              <main
+                style={{
+                  flex: "3 1 600px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "2rem",
+                }}
+              >
+                <ArticleSection />
+                <DonationSection />
+              </main>
+              <aside style={{ flex: "1 1 250px" }}>
+                <StatsPanel deaths={3848} injuries={4725} missing={708} />
+              </aside>
+            </div>
+          }
+        />
+
+        {/* ✅ Add this new route */}
+        <Route path="/submit" element={<SubmitResource />} />
+      </Routes>
     </div>
   );
 }
