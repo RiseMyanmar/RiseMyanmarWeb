@@ -1,5 +1,5 @@
 const path = require("path");
-DEBUG = true;
+DEBUG = false;
 
 if (DEBUG) {
   require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
