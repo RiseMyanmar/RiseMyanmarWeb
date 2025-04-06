@@ -1,0 +1,237 @@
+.resource-list-container {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.resource-list-heading {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
+    Roboto, Helvetica, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #1a73e8, #5c9ef7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1.2rem;
+}
+
+.resource-list-message {
+  text-align: center;
+  color: #555;
+  margin: 2rem 0;
+  font-style: italic;
+}
+
+.resource-list-error {
+  text-align: center;
+  color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+/* Scrollable container for the resource list */
+.resource-list-scrollable-container {
+  max-height: 500px; /* Height to fit approximately 4 items */
+  overflow-y: auto;
+  border-radius: 12px;
+  background: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 0.5rem;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #f5f5f5;
+}
+
+/* Styling for WebKit browsers (Chrome, Safari) */
+.resource-list-scrollable-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.resource-list-scrollable-container::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.resource-list-scrollable-container::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 8px;
+}
+
+/* Individual resource list item */
+.resource-list-item {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease;
+}
+
+.resource-list-item:last-child {
+  border-bottom: none;
+}
+
+.resource-list-item:hover {
+  background-color: #f9f9f9;
+}
+
+/* Resource item header with location and date */
+.resource-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.resource-item-location {
+  font-weight: 600;
+  color: #1a73e8;
+  font-size: 1rem;
+}
+
+.resource-item-date {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* Resource item details */
+.resource-item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.resource-item-detail {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.resource-item-label {
+  color: #555;
+  min-width: 110px;
+  font-weight: 500;
+}
+
+.resource-item-value {
+  color: #333;
+  word-break: break-word;
+}
+
+.resource-item-org {
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.resource-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.resource-card {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.resource-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+.resource-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.75rem;
+}
+
+.resource-location {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI",
+    Roboto, Helvetica, sans-serif;
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a73e8;
+  flex: 1;
+}
+
+.resource-date {
+  font-size: 0.85rem;
+  color: #666;
+  white-space: nowrap;
+  margin-left: 1rem;
+}
+
+.resource-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.resource-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.resource-detail-label {
+  font-size: 0.85rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.resource-detail-value {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .resource-list {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  .resource-list-scrollable-container {
+    max-height: 450px;
+  }
+
+  .resource-item-detail {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .resource-item-label {
+    min-width: unset;
+  }
+}
+
+@media (max-width: 480px) {
+  .resource-list {
+    grid-template-columns: 1fr;
+  }
+
+  .resource-card-header {
+    flex-direction: column;
+  }
+
+  .resource-date {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+
+  .resource-item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .resource-item-date {
+    font-size: 0.75rem;
+  }
+}

@@ -34,7 +34,7 @@ function SubmitResource() {
       powerBanks: false,
       other: "",
     },
-    peopleInNeed: 0,
+    peopleInNeed: "",
     organization: "",
   });
 
@@ -152,8 +152,8 @@ function SubmitResource() {
         }));
       }
     } else if (name === "peopleInNeed") {
-      const digitsOnly = value.replace(/\D/g, "");
-      const numValue = digitsOnly === "" ? 0 : parseInt(digitsOnly, 10);
+      const numValue = value === "" ? 0 : parseInt(value, 10);
+
       setFormData({
         ...formData,
         peopleInNeed: numValue,
@@ -171,7 +171,8 @@ function SubmitResource() {
           other: value,
         },
       });
-    } else if (type === "checkbox") {
+    } else {
+      // Handle checkbox fields
       setFormData({
         ...formData,
         survivalItems: {
@@ -273,8 +274,9 @@ function SubmitResource() {
           <input
             type="number"
             name="peopleInNeed"
-            value={formData.peopleInNeed}
+            value={formData.peopleInNeed || ""}
             onChange={handleChange}
+            placeholder="0"
             className="form-input"
             min="0"
             required
