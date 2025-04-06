@@ -36,6 +36,7 @@ function App() {
   }, [lang]);
 
   return (
+
     <div className="app-container">
       <LanguageSwitcher />
 
