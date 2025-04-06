@@ -1,4 +1,11 @@
-require("dotenv").config();
+const path = require("path");
+DEBUG = false;
+
+if (DEBUG) {
+  require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+} else {
+  require("dotenv").config();
+}
 const express = require("express");
 const mongoose = require("mongoose");
 const surveyRoutes = require("./surveyRoutes");
@@ -12,7 +19,11 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: ["https://risemyanmarweb.onrender.com"],
+    origin: [
+      "https://risemyanmarweb.onrender.com",
+      "http://localhost:3000",
+      "http://localhost:8000",
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
@@ -20,10 +31,16 @@ app.use(
 
 // Connect to MongoDB using environment variables
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI, {
+    serverSelectionTimeoutMS: 5000,
+  })
   .then(() => {
-    console.log("MongoDB connected");
+    console.log("✅ MongoDB connected successfully");
     console.log("Connected to database:", mongoose.connection.name);
+    console.log(
+      "Connection string detected:",
+      process.env.MONGODB_URI ? "Yes" : "No"
+    );
 
     // Schedule news fetching once connected to DB
     // Schedule to run at midnight every day
@@ -43,7 +60,13 @@ mongoose
       .then(() => console.log("✅ Initial news fetch completed"))
       .catch((err) => console.error("❌ Initial news fetch failed:", err));
   })
-  .catch((err) => console.error("MongoDB connection error:", err));
+  .catch((err) => {
+    console.error("❌ MongoDB connection error:", err);
+    console.error("MongoDB URI available:", !!process.env.MONGODB_URI);
+    if (process.env.MONGODB_URI) {
+      console.log("URI format check: starts with mongodb+srv://");
+    }
+  });
 
 // API routes
 app.use("/api/surveys", surveyRoutes);
@@ -73,5 +96,22 @@ app.get("/", (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => console.log(`Backend server running on port ${PORT}`));
+// Add this near your other routes (only in DEBUG mode)
+if (DEBUG) {
+  app.get("/debug/env", (req, res) => {
+    res.json({
+      mongodb_uri_exists: !!process.env.MONGODB_URI,
+      gnews_api_key_exists: !!process.env.REACT_APP_GNEWS_API_KEY,
+      backend_port: process.env.BACKEND_PORT,
+      env_path: path.resolve(__dirname, "../.env"),
+    });
+  });
+}
+
+if (DEBUG) {
+  const PORT = process.env.BACKEND_PORT || 3000;
+  app.listen(PORT, () => console.log(`Backend server running on port ${PORT}`));
+} else {
+  const PORT = process.env.PORT || 10000;
+  app.listen(PORT, () => console.log(`Backend server running on port ${PORT}`));
+}
