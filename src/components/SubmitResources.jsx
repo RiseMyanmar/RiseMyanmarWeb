@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useLanguage } from "./LanguageContext";
+import { translateText } from "./translate";
 
 function SubmitResource() {
   const { isAuthenticated, loginWithRedirect, user, logout } = useAuth0();
+  const { lang } = useLanguage();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
@@ -28,6 +31,135 @@ function SubmitResource() {
     organization: "",
   });
 
+  const [labels, setLabels] = useState({
+    title: "📝 Submit Resource Needs",
+    welcome: "Welcome,",
+    organization: "Organization (if applicable)",
+    address: "Location Address",
+    addressPlaceholder: "e.g., Kyauktada Township, Yangon",
+    peopleInNeed: "Estimated People in Need",
+    resourcesNeeded: "Resources Needed (select all that apply)",
+    otherResources: "Other resources needed (please specify)",
+    submit: "Submit Report",
+    logout: "Log Out",
+    restrictedAccess: "🔒 Restricted Access",
+    restrictedMessage: "Only verified organizations can submit resource updates.",
+    login: "Log In to Continue",
+    successMessage: "Your resource needs have been submitted successfully!",
+    updateMessage: "Your resource needs have been updated successfully!",
+    errorMessage: "Failed to submit survey",
+    survivalItems: {
+      food: "Food",
+      water: "Water",
+      clothes: "Clothes",
+      medicalSupplies: "Medical Supplies",
+      sleepingBags: "Sleeping Bags",
+      hygieneProducts: "Hygiene Products",
+      blankets: "Blankets",
+      tents: "Tents",
+      powerBanks: "Power Banks",
+    },
+  });
+
+  useEffect(() => {
+    async function translateLabels() {
+      if (lang === "my") {
+        const translatedLabels = await Promise.all([
+          translateText("📝 Submit Resource Needs", "my"),
+          translateText("Welcome,", "my"),
+          translateText("Organization (if applicable)", "my"),
+          translateText("Location Address", "my"),
+          translateText("e.g., Kyauktada Township, Yangon", "my"),
+          translateText("Estimated People in Need", "my"),
+          translateText("Resources Needed (select all that apply)", "my"),
+          translateText("Other resources needed (please specify)", "my"),
+          translateText("Submit Report", "my"),
+          translateText("Log Out", "my"),
+          translateText("🔒 Restricted Access", "my"),
+          translateText("Only verified organizations can submit resource updates.", "my"),
+          translateText("Log In to Continue", "my"),
+          translateText("Your resource needs have been submitted successfully!", "my"),
+          translateText("Your resource needs have been updated successfully!", "my"),
+          translateText("Failed to submit survey", "my"),
+        ]);
+
+        const translatedSurvivalItems = await Promise.all([
+          translateText("Food", "my"),
+          translateText("Water", "my"),
+          translateText("Clothes", "my"),
+          translateText("Medical Supplies", "my"),
+          translateText("Sleeping Bags", "my"),
+          translateText("Hygiene Products", "my"),
+          translateText("Blankets", "my"),
+          translateText("Tents", "my"),
+          translateText("Power Banks", "my"),
+        ]);
+
+        setLabels({
+          title: translatedLabels[0],
+          welcome: translatedLabels[1],
+          organization: translatedLabels[2],
+          address: translatedLabels[3],
+          addressPlaceholder: translatedLabels[4],
+          peopleInNeed: translatedLabels[5],
+          resourcesNeeded: translatedLabels[6],
+          otherResources: translatedLabels[7],
+          submit: translatedLabels[8],
+          logout: translatedLabels[9],
+          restrictedAccess: translatedLabels[10],
+          restrictedMessage: translatedLabels[11],
+          login: translatedLabels[12],
+          successMessage: translatedLabels[13],
+          updateMessage: translatedLabels[14],
+          errorMessage: translatedLabels[15],
+          survivalItems: {
+            food: translatedSurvivalItems[0],
+            water: translatedSurvivalItems[1],
+            clothes: translatedSurvivalItems[2],
+            medicalSupplies: translatedSurvivalItems[3],
+            sleepingBags: translatedSurvivalItems[4],
+            hygieneProducts: translatedSurvivalItems[5],
+            blankets: translatedSurvivalItems[6],
+            tents: translatedSurvivalItems[7],
+            powerBanks: translatedSurvivalItems[8],
+          },
+        });
+      } else {
+        setLabels({
+          title: "📝 Submit Resource Needs",
+          welcome: "Welcome,",
+          organization: "Organization (if applicable)",
+          address: "Location Address",
+          addressPlaceholder: "e.g., Kyauktada Township, Yangon",
+          peopleInNeed: "Estimated People in Need",
+          resourcesNeeded: "Resources Needed (select all that apply)",
+          otherResources: "Other resources needed (please specify)",
+          submit: "Submit Report",
+          logout: "Log Out",
+          restrictedAccess: "🔒 Restricted Access",
+          restrictedMessage: "Only verified organizations can submit resource updates.",
+          login: "Log In to Continue",
+          successMessage: "Your resource needs have been submitted successfully!",
+          updateMessage: "Your resource needs have been updated successfully!",
+          errorMessage: "Failed to submit survey",
+          survivalItems: {
+            food: "Food",
+            water: "Water",
+            clothes: "Clothes",
+            medicalSupplies: "Medical Supplies",
+            sleepingBags: "Sleeping Bags",
+            hygieneProducts: "Hygiene Products",
+            blankets: "Blankets",
+            tents: "Tents",
+            powerBanks: "Power Banks",
+          },
+        });
+      }
+    }
+
+    translateLabels();
+  }, [lang]);
+
   if (!isAuthenticated) {
     return (
       <div
@@ -40,8 +172,8 @@ function SubmitResource() {
           boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
         }}
       >
-        <h2>🔒 Restricted Access</h2>
-        <p>Only verified organizations can submit resource updates.</p>
+        <h2>{labels.restrictedAccess}</h2>
+        <p>{labels.restrictedMessage}</p>
         <button
           onClick={() => loginWithRedirect()}
           style={{
@@ -56,13 +188,12 @@ function SubmitResource() {
             boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
           }}
         >
-          Log In to Continue
+          {labels.login}
         </button>
       </div>
     );
   }
 
-  // Complete the handleChange function
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -110,9 +241,8 @@ function SubmitResource() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setSuccess(false); // Reset success state
+    setSuccess(false);
 
-    // Convert survivalItems object to array of strings for backend
     const survivalItemsArray = Object.entries(formData.survivalItems)
       .filter(
         ([key, value]) =>
@@ -121,7 +251,6 @@ function SubmitResource() {
       .map(([key, value]) => (key === "other" ? value : key));
 
     try {
-      // Use environment variable for backend URL
       const backendUrl = process.env.REACT_APP_BACKEND_URL;
       const response = await fetch(`${backendUrl}/api/surveys`, {
         method: "POST",
@@ -130,7 +259,7 @@ function SubmitResource() {
         },
         body: JSON.stringify({
           location: {
-            coordinates: [95.0, 22.0], // Placeholder - would be from Google API
+            coordinates: [95.0, 22.0],
             regionName: formData.location.address,
           },
           survivalItems: survivalItemsArray,
@@ -140,22 +269,17 @@ function SubmitResource() {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to submit survey");
+        throw new Error(labels.errorMessage);
       }
 
       const result = await response.json();
-
-      // Store whether this was an update or a new creation
       const wasUpdated = result.message === "Survey updated successfully";
 
       setSuccess({
         isUpdate: wasUpdated,
-        message: wasUpdated
-          ? "Your resource needs have been updated successfully!"
-          : "Your resource needs have been submitted successfully!",
+        message: wasUpdated ? labels.updateMessage : labels.successMessage,
       });
 
-      // Reset form after successful submission
       setFormData({
         location: {
           address: "",
@@ -219,12 +343,11 @@ function SubmitResource() {
           paddingBottom: "10px",
         }}
       >
-        📝 Submit Resource Needs
+        {labels.title}
       </h2>
 
       <p style={{ fontSize: "1.1rem", marginBottom: "2rem" }}>
-        Welcome, <strong>{user?.name}</strong>. Please provide details about the
-        resources needed.
+        {labels.welcome} <strong>{user?.name}</strong>. {labels.restrictedMessage}
       </p>
 
       {success && (
@@ -243,7 +366,7 @@ function SubmitResource() {
           <span style={{ marginRight: "10px" }}>
             {success.isUpdate ? "📝" : "✅"}
           </span>
-          {success.message}
+          {success.isUpdate ? labels.updateMessage : labels.successMessage}
         </div>
       )}
 
@@ -261,12 +384,11 @@ function SubmitResource() {
           }}
         >
           <span style={{ marginRight: "10px" }}>❌</span>
-          {error}
+          {labels.errorMessage}
         </div>
       )}
 
       <form onSubmit={handleSubmit}>
-        {/* Organization Information */}
         <div style={{ marginBottom: "1.5rem" }}>
           <label
             htmlFor="organization"
@@ -278,7 +400,7 @@ function SubmitResource() {
               color: "#2c3e50",
             }}
           >
-            Organization (if applicable)
+            {labels.organization}
           </label>
           <input
             type="text"
@@ -286,7 +408,7 @@ function SubmitResource() {
             name="organization"
             value={formData.organization}
             onChange={handleChange}
-            placeholder="Your organization name"
+            placeholder={labels.organization}
             style={{
               width: "100%",
               padding: "12px",
@@ -297,7 +419,6 @@ function SubmitResource() {
           />
         </div>
 
-        {/* Address */}
         <div style={{ marginBottom: "1.5rem" }}>
           <label
             htmlFor="address"
@@ -309,7 +430,7 @@ function SubmitResource() {
               color: "#2c3e50",
             }}
           >
-            Location Address
+            {labels.address}
           </label>
           <input
             type="text"
@@ -317,7 +438,7 @@ function SubmitResource() {
             name="address"
             value={formData.location.address}
             onChange={handleChange}
-            placeholder="e.g., Kyauktada Township, Yangon"
+            placeholder={labels.addressPlaceholder}
             style={{
               width: "100%",
               padding: "12px",
@@ -327,19 +448,8 @@ function SubmitResource() {
             }}
             required
           />
-          <p
-            style={{
-              margin: "8px 0 0",
-              fontSize: "0.9rem",
-              color: "#6c757d",
-              fontStyle: "italic",
-            }}
-          >
-            Please provide specific township and city information
-          </p>
         </div>
 
-        {/* People in Need */}
         <div style={{ marginBottom: "1.5rem" }}>
           <label
             htmlFor="peopleInNeed"
@@ -351,18 +461,17 @@ function SubmitResource() {
               color: "#2c3e50",
             }}
           >
-            Estimated People in Need
+            {labels.peopleInNeed}
           </label>
           <input
-            type="text" // Changed from "number" to "text" for better control
-            inputMode="numeric" // Tells mobile devices to show numeric keyboard
-            pattern="[0-9]*" // HTML5 validation for digits only
+            type="text"
+            inputMode="numeric"
+            pattern="[0-9]*"
             id="peopleInNeed"
             name="peopleInNeed"
             value={formData.peopleInNeed === 0 ? "" : formData.peopleInNeed}
             onChange={handleChange}
             onKeyDown={(e) => {
-              // Allow only: digits, backspace, delete, tab, escape, enter, arrow keys
               const allowedKeys = [
                 "Backspace",
                 "Delete",
@@ -393,7 +502,6 @@ function SubmitResource() {
           />
         </div>
 
-        {/* Survival Items Checklist */}
         <div style={{ marginBottom: "1.5rem" }}>
           <label
             style={{
@@ -404,7 +512,7 @@ function SubmitResource() {
               color: "#2c3e50",
             }}
           >
-            Resources Needed (select all that apply)
+            {labels.resourcesNeeded}
           </label>
 
           <div
@@ -429,7 +537,7 @@ function SubmitResource() {
                 checked={formData.survivalItems.food}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>Food</span>
+              <span style={checkboxLabelStyle}>{labels.survivalItems.food}</span>
             </label>
 
             <label
@@ -446,7 +554,7 @@ function SubmitResource() {
                 checked={formData.survivalItems.water}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>Water</span>
+              <span style={checkboxLabelStyle}>{labels.survivalItems.water}</span>
             </label>
 
             <label
@@ -463,7 +571,7 @@ function SubmitResource() {
                 checked={formData.survivalItems.clothes}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>Clothes</span>
+              <span style={checkboxLabelStyle}>{labels.survivalItems.clothes}</span>
             </label>
 
             <label
@@ -480,7 +588,7 @@ function SubmitResource() {
                 checked={formData.survivalItems.medicalSupplies}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>Medical Supplies</span>
+              <span style={checkboxLabelStyle}>{labels.survivalItems.medicalSupplies}</span>
             </label>
 
             <label
@@ -497,7 +605,7 @@ function SubmitResource() {
                 checked={formData.survivalItems.sleepingBags}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>Sleeping Bags</span>
+              <span style={checkboxLabelStyle}>{labels.survivalItems.sleepingBags}</span>
             </label>
 
             <label
@@ -514,7 +622,7 @@ function SubmitResource() {
                 checked={formData.survivalItems.hygieneProducts}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>Hygiene Products</span>
+              <span style={checkboxLabelStyle}>{labels.survivalItems.hygieneProducts}</span>
             </label>
 
             <label
@@ -531,7 +639,7 @@ function SubmitResource() {
                 checked={formData.survivalItems.blankets}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>Blankets</span>
+              <span style={checkboxLabelStyle}>{labels.survivalItems.blankets}</span>
             </label>
 
             <label
@@ -548,7 +656,7 @@ function SubmitResource() {
                 checked={formData.survivalItems.tents}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>Tents</span>
+              <span style={checkboxLabelStyle}>{labels.survivalItems.tents}</span>
             </label>
 
             <label
@@ -565,7 +673,7 @@ function SubmitResource() {
                 checked={formData.survivalItems.powerBanks}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>Power Banks</span>
+              <span style={checkboxLabelStyle}>{labels.survivalItems.powerBanks}</span>
             </label>
           </div>
 
@@ -578,7 +686,7 @@ function SubmitResource() {
               color: "#2c3e50",
             }}
           >
-            Other resources needed (please specify)
+            {labels.otherResources}
           </label>
           <input
             type="text"
@@ -597,7 +705,6 @@ function SubmitResource() {
           />
         </div>
 
-        {/* Submit and Logout Buttons */}
         <div
           style={{
             display: "flex",
@@ -622,7 +729,7 @@ function SubmitResource() {
               transition: "all 0.2s ease",
             }}
           >
-            {loading ? "Submitting..." : "Submit Report"}
+            {loading ? "Submitting..." : labels.submit}
           </button>
 
           <button
@@ -643,7 +750,7 @@ function SubmitResource() {
               transition: "all 0.2s ease",
             }}
           >
-            Log Out
+            {labels.logout}
           </button>
         </div>
       </form>

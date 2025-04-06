@@ -51,10 +51,13 @@ function App() {
         <p style={{ color: "#555" }}>{description}</p>
         <nav>
           <Link to="/" style={{ marginRight: "1rem" }}>
-            Home
+          {lang === "en" ? "Home" : "မူလစာမျက်နှာ"}
           </Link>
-          <Link to="/submit">Submit Resource</Link>
+          <Link to="/submit">
+          {lang === "en" ? "Submit Resource" : "အရင်းအမြစ်တင်သွင်းရန်"}
+          </Link>
         </nav>
+
         <button
           onClick={toggleLang}
           style={{
