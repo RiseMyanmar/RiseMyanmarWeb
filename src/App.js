@@ -3,9 +3,12 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import StatsPanel from "./components/StatsPanel";
 import ArticleSection from "./components/ArticleSection";
 import DonationSection from "./components/DonationSection";
+import MapComponent from "./components/MapComponent";
+import './App.css';
 import SubmitResource from "./components/SubmitResources";
 import { useLanguage } from "./components/LanguageContext";
 import { translateText } from "./components/translate";
+
 
 function App() {
   const { lang,setLang } = useLanguage();
@@ -63,7 +66,6 @@ function App() {
   {lang === "en" ? "မြန်မာစာ" : "English"}
 </button>
       </header>
-
       <Routes>
         <Route path="/" element={
           <div style={{ display: "flex", justifyContent: "center", gap: "2rem", flexWrap: "wrap" }}>
@@ -76,6 +78,7 @@ function App() {
             </aside>
           </div>
         } />
+
         <Route path="/submit" element={<SubmitResource />} />
       </Routes>
     </div>
@@ -83,4 +86,3 @@ function App() {
 }
 
 export default App;
-

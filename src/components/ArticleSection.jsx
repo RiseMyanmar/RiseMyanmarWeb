@@ -7,8 +7,8 @@ function ArticleSection() {
   useEffect(() => {
     async function fetchNews() {
       const res = await fetch(
-        `https://gnews.io/api/v4/search?q=myanmar%20earthquake&lang=en&country=us&max=10&apikey=48bfa8a4c588aa2886ca7e33d0ba70a9`
-      );
+        `https://gnews.io/api/v4/search?q=myanmar%20earthquake&lang=en&country=us&max=10&apikey=${process.env.REACT_APP_GNEWS_API_KEY}`
+      );      
       const data = await res.json();
 
       const seenLinks = new Set();
