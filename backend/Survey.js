@@ -13,33 +13,32 @@ const SurveySchema = new mongoose.Schema(
         type: [Number],
         required: true,
       },
+      regionName: {
+        type: String,
+        required: true,
+        trim: true,
+      },
     },
-    money: {
-      type: Number,
-      required: true,
-    },
-    // Array of strings for survival items like meds, blanket, sleeping bag
+    // Array of strings for survival items
     survivalItems: {
       type: [String],
       default: [],
     },
-    water: {
+    // People in need count
+    peopleInNeed: {
       type: Number,
-      required: true,
+      default: 0,
     },
-    food: {
-      type: Number,
-      required: true,
-    },
-    clothes: {
-      type: Number,
-      required: true,
+    // Organization information
+    organization: {
+      type: String,
+      trim: true,
     },
   },
   { timestamps: true }
 );
 
 // Create an index for geospatial queries
-SurveySchema.index({ location: "2dsphere" });
+SurveySchema.index({ "location.coordinates": "2dsphere" });
 
 module.exports = mongoose.model("Survey", SurveySchema);
