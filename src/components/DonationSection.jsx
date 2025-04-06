@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DonationCard from "./DonationCard";
+import { translateText } from "./translate";
+import { useLanguage } from "./LanguageContext";
 
 function DonationSection() {
+  const { lang } = useLanguage();
+
   const donationLinks = [
     {
       title: "Myanmar Earthquake Relief by Global Aid",
@@ -20,11 +24,36 @@ function DonationSection() {
     }
   ];
 
+  const [translatedLinks, setTranslatedLinks] = useState(donationLinks);
+  const [sectionTitle, setSectionTitle] = useState("💸 Donate to Trusted Campaigns");
+
+  useEffect(() => {
+    async function translateAll() {
+      if (lang === "my") {
+        const title = await translateText("Donate to Trusted Campaigns", "my");
+        const translations = await Promise.all(
+          donationLinks.map(async (item) => ({
+            ...item,
+            title: await translateText(item.title, "my"),
+            description: await translateText(item.description, "my")
+          }))
+        );
+        setTranslatedLinks(translations);
+        setSectionTitle("💸 " + title);
+      } else {
+        setTranslatedLinks(donationLinks);
+        setSectionTitle("💸 Donate to Trusted Campaigns");
+      }
+    }
+
+    translateAll();
+  }, [lang]);
+
   return (
     <div style={{ marginTop: "2rem" }}>
-      <h2>💸 Donate to Trusted Campaigns</h2>
+      <h2>{sectionTitle}</h2>
       <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginTop: "1rem" }}>
-        {donationLinks.map((item, index) => (
+        {translatedLinks.map((item, index) => (
           <DonationCard
             key={index}
             title={item.title}
