@@ -43,7 +43,8 @@ function SubmitResource() {
     submit: "Submit Report",
     logout: "Log Out",
     restrictedAccess: "🔒 Restricted Access",
-    restrictedMessage: "Only verified organizations can submit resource updates.",
+    restrictedMessage:
+      "Only verified organizations can submit resource updates.",
     login: "Log In to Continue",
     successMessage: "Your resource needs have been submitted successfully!",
     updateMessage: "Your resource needs have been updated successfully!",
@@ -76,10 +77,19 @@ function SubmitResource() {
           translateText("Submit Report", "my"),
           translateText("Log Out", "my"),
           translateText("🔒 Restricted Access", "my"),
-          translateText("Only verified organizations can submit resource updates.", "my"),
+          translateText(
+            "Only verified organizations can submit resource updates.",
+            "my"
+          ),
           translateText("Log In to Continue", "my"),
-          translateText("Your resource needs have been submitted successfully!", "my"),
-          translateText("Your resource needs have been updated successfully!", "my"),
+          translateText(
+            "Your resource needs have been submitted successfully!",
+            "my"
+          ),
+          translateText(
+            "Your resource needs have been updated successfully!",
+            "my"
+          ),
           translateText("Failed to submit survey", "my"),
         ]);
 
@@ -137,9 +147,11 @@ function SubmitResource() {
           submit: "Submit Report",
           logout: "Log Out",
           restrictedAccess: "🔒 Restricted Access",
-          restrictedMessage: "Only verified organizations can submit resource updates.",
+          restrictedMessage:
+            "Only verified organizations can submit resource updates.",
           login: "Log In to Continue",
-          successMessage: "Your resource needs have been submitted successfully!",
+          successMessage:
+            "Your resource needs have been submitted successfully!",
           updateMessage: "Your resource needs have been updated successfully!",
           errorMessage: "Failed to submit survey",
           survivalItems: {
@@ -196,10 +208,16 @@ function SubmitResource() {
 
   const fetchCoordinates = async (address) => {
     try {
-      const apiKey = process.env.REACT_APP_GOOGLE_API_KEY; // Use your Google API key
+      // First, try with "Myanmar" appended to improve geocoding results
+      let fullAddress = address;
+      if (!address.toLowerCase().includes("myanmar")) {
+        fullAddress = `${address}, Myanmar`;
+      }
+
+      const apiKey = process.env.REACT_APP_GOOGLE_API_KEY;
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-          address
+          fullAddress
         )}&key=${apiKey}`
       );
 
@@ -213,16 +231,33 @@ function SubmitResource() {
         const { lat, lng } = data.results[0].geometry.location;
         return [lng, lat]; // Return coordinates as [longitude, latitude]
       } else {
-        throw new Error("No results found for the given address");
+        // If no results with Myanmar appended, try with just "Burma" as an alternative
+        const burmaTry = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+            `${address}, Burma`
+          )}&key=${apiKey}`
+        );
+
+        const burmaData = await burmaTry.json();
+
+        if (burmaData.results.length > 0) {
+          const { lat, lng } = burmaData.results[0].geometry.location;
+          return [lng, lat];
+        }
+
+        // Fall back to central Myanmar coordinates if geocoding fails
+        console.warn(
+          "Using fallback coordinates for Myanmar (central location)"
+        );
+        return [96.1345, 16.8661]; // Central Myanmar coordinates
       }
     } catch (error) {
       console.error("Error fetching coordinates:", error);
-      return [0, 0]; // Default coordinates if an error occurs
+      return [96.1345, 16.8661]; // Central Myanmar coordinates
     }
   };
   // Update the handleChange function to properly handle peopleInNeed
   const handleChange = async (e) => {
-
     const { name, value, type, checked } = e.target;
 
     if (name === "address") {
@@ -299,10 +334,7 @@ function SubmitResource() {
         },
         body: JSON.stringify({
           location: {
-
             coordinates: formData.location.coordinates,
-
-           
 
             regionName: formData.location.address,
           },
@@ -391,7 +423,8 @@ function SubmitResource() {
       </h2>
 
       <p style={{ fontSize: "1.1rem", marginBottom: "2rem" }}>
-        {labels.welcome} <strong>{user?.name}</strong>. {labels.restrictedMessage}
+        {labels.welcome} <strong>{user?.name}</strong>.{" "}
+        {labels.restrictedMessage}
       </p>
 
       {success && (
@@ -581,7 +614,9 @@ function SubmitResource() {
                 checked={formData.survivalItems.food}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>{labels.survivalItems.food}</span>
+              <span style={checkboxLabelStyle}>
+                {labels.survivalItems.food}
+              </span>
             </label>
 
             <label
@@ -598,7 +633,9 @@ function SubmitResource() {
                 checked={formData.survivalItems.water}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>{labels.survivalItems.water}</span>
+              <span style={checkboxLabelStyle}>
+                {labels.survivalItems.water}
+              </span>
             </label>
 
             <label
@@ -615,7 +652,9 @@ function SubmitResource() {
                 checked={formData.survivalItems.clothes}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>{labels.survivalItems.clothes}</span>
+              <span style={checkboxLabelStyle}>
+                {labels.survivalItems.clothes}
+              </span>
             </label>
 
             <label
@@ -632,7 +671,9 @@ function SubmitResource() {
                 checked={formData.survivalItems.medicalSupplies}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>{labels.survivalItems.medicalSupplies}</span>
+              <span style={checkboxLabelStyle}>
+                {labels.survivalItems.medicalSupplies}
+              </span>
             </label>
 
             <label
@@ -649,7 +690,9 @@ function SubmitResource() {
                 checked={formData.survivalItems.sleepingBags}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>{labels.survivalItems.sleepingBags}</span>
+              <span style={checkboxLabelStyle}>
+                {labels.survivalItems.sleepingBags}
+              </span>
             </label>
 
             <label
@@ -666,7 +709,9 @@ function SubmitResource() {
                 checked={formData.survivalItems.hygieneProducts}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>{labels.survivalItems.hygieneProducts}</span>
+              <span style={checkboxLabelStyle}>
+                {labels.survivalItems.hygieneProducts}
+              </span>
             </label>
 
             <label
@@ -683,7 +728,9 @@ function SubmitResource() {
                 checked={formData.survivalItems.blankets}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>{labels.survivalItems.blankets}</span>
+              <span style={checkboxLabelStyle}>
+                {labels.survivalItems.blankets}
+              </span>
             </label>
 
             <label
@@ -700,7 +747,9 @@ function SubmitResource() {
                 checked={formData.survivalItems.tents}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>{labels.survivalItems.tents}</span>
+              <span style={checkboxLabelStyle}>
+                {labels.survivalItems.tents}
+              </span>
             </label>
 
             <label
@@ -717,7 +766,9 @@ function SubmitResource() {
                 checked={formData.survivalItems.powerBanks}
                 onChange={handleChange}
               />
-              <span style={checkboxLabelStyle}>{labels.survivalItems.powerBanks}</span>
+              <span style={checkboxLabelStyle}>
+                {labels.survivalItems.powerBanks}
+              </span>
             </label>
           </div>
 
