@@ -172,7 +172,7 @@ function SubmitResource() {
         },
         body: JSON.stringify({
           location: {
-            coordinates: [95.0, 22.0], // Placeholder - would be from Google API
+            coordinates: formData.location.coordinates,
             regionName: formData.location.address,
           },
           survivalItems: survivalItemsArray,
