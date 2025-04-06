@@ -8,13 +8,14 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <BrowserRouter> {/* ✅ Wrap everything inside BrowserRouter */}
-    <Auth0Provider
-      domain="dev-qlujaq14vw65tmsy.us.auth0.com"
-      clientId="nqc3hcpUxToxNR9AehM1sJVEeQzXOtgA"
-      authorizationParams={{
-        redirect_uri: window.location.origin
-      }}
-    >
+  <Auth0Provider
+    domain={process.env.REACT_APP_AUTH0_DOMAIN}
+    clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+    authorizationParams={{
+    redirect_uri: window.location.origin
+    }}
+  >
+
       <App />
     </Auth0Provider>
   </BrowserRouter>

@@ -33,13 +33,11 @@ function App() {
       <Route path="/" element={
       <div style={{ display: "flex", justifyContent: "center", gap: "2rem", flexWrap: "wrap" }}>
         <main style={{ flex: "3 1 600px", display: "flex", flexDirection: "column", gap: "2rem" }}>
+          <StatsPanel deaths={3848} injuries={4725} missing={708} />
           <ArticleSection />
           <MapComponent />
           <DonationSection />
         </main>
-        <aside style={{ flex: "1 1 250px" }}>
-          <StatsPanel deaths={3848} injuries={4725} missing={708} />
-        </aside>
       </div>
       } />
 
