@@ -71,6 +71,7 @@ function App() {
           <div style={{ display: "flex", justifyContent: "center", gap: "2rem", flexWrap: "wrap" }}>
             <main style={{ flex: "3 1 600px", display: "flex", flexDirection: "column", gap: "2rem" }}>
               <ArticleSection />
+              <MapComponent />
               <DonationSection />
             </main>
             <aside style={{ flex: "1 1 250px" }}>
