@@ -54,5 +54,24 @@ app.get("/test", (req, res) => {
   res.json({ message: "Test route works" });
 });
 
+// Add this route handler for the root path near your other routes
+app.get("/", (req, res) => {
+  res.json({
+    message: "Help Myanmar Rise API Server",
+    endpoints: [
+      {
+        path: "/api/news",
+        description: "Fetch news articles about Myanmar earthquake",
+      },
+      { path: "/api/surveys", description: "Access and submit survey data" },
+      {
+        path: "/test",
+        description: "Test endpoint to verify server functionality",
+      },
+    ],
+    status: "online",
+  });
+});
+
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => console.log(`Backend server running on port ${PORT}`));
