@@ -208,7 +208,6 @@ function SubmitResource() {
     } else if (name === "peopleInNeed") {
       const digitsOnly = value.replace(/\D/g, "");
       const numValue = digitsOnly === "" ? 0 : parseInt(digitsOnly, 10);
-
       setFormData({
         ...formData,
         peopleInNeed: numValue,
