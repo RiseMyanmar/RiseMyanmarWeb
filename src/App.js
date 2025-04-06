@@ -36,12 +36,14 @@ function App() {
   }, [lang]);
 
   return (
-
     <div className="app-container">
       <LanguageSwitcher />
 
       <header>
-        <h1>{title}</h1>
+        <h1>
+          <span className="gradient-text">{title}</span>
+          <span className="flag-emoji"> 🇲🇲</span>
+        </h1>
         <p>{description}</p>
         <nav>
           <Link to="/">{lang === "en" ? "Home" : "မူလစာမျက်နှာ"}</Link>
