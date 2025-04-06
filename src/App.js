@@ -12,7 +12,7 @@ import { translateText } from "./components/translate";
 
 function App() {
   const { lang } = useLanguage();
-  const [title, setTitle] = useState("Help Myanmar Rise 🇲🇲");
+  const [title, setTitle] = useState("Help Myanmar Rise");
   const [description, setDescription] = useState(
     "Earthquake Relief and Recovery Tracker"
   );
@@ -24,10 +24,10 @@ function App() {
           translateText("Help Myanmar Rise", "my"),
           translateText("Earthquake Relief and Recovery Tracker", "my"),
         ]);
-        setTitle(t + " 🇲🇲");
+        setTitle(t);
         setDescription(d);
       } else {
-        setTitle("Help Myanmar Rise 🇲🇲");
+        setTitle("Help Myanmar Rise");
         setDescription("Earthquake Relief and Recovery Tracker");
       }
     }
@@ -36,12 +36,14 @@ function App() {
   }, [lang]);
 
   return (
-
     <div className="app-container">
       <LanguageSwitcher />
 
       <header>
-        <h1>{title}</h1>
+        <h1>
+          <span className="gradient-text">{title}</span>
+          <span className="flag-emoji"> 🇲🇲</span>
+        </h1>
         <p>{description}</p>
         <nav>
           <Link to="/">{lang === "en" ? "Home" : "မူလစာမျက်နှာ"}</Link>
