@@ -12,8 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    // Allow connections from any origin in development
-    origin: "*", // For development only - restrict this in production
+    origin: ["https://risemyanmarweb.onrender.com"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
