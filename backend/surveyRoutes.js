@@ -10,7 +10,6 @@ router.post("/", async (req, res) => {
 
     // Check if a survey with the same organization and location exists
     const existingSurvey = await Survey.findOne({
-      organization: req.body.organization,
       "location.regionName": req.body.location.regionName,
     });
 
