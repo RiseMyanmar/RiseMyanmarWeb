@@ -114,6 +114,7 @@ function SubmitResource() {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setSuccess(false); // Reset success state
 
     // Convert survivalItems object to array of strings for backend
     const survivalItemsArray = Object.entries(formData.survivalItems)
@@ -124,7 +125,9 @@ function SubmitResource() {
       .map(([key, value]) => (key === "other" ? value : key));
 
     try {
-      const response = await fetch("http://localhost:8000/api/surveys", {
+      // Use environment variable for backend URL
+      const backendUrl = process.env.REACT_APP_BACKEND_URL;
+      const response = await fetch(`${backendUrl}/api/surveys`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -144,7 +147,18 @@ function SubmitResource() {
         throw new Error("Failed to submit survey");
       }
 
-      setSuccess(true);
+      const result = await response.json();
+
+      // Store whether this was an update or a new creation
+      const wasUpdated = result.message === "Survey updated successfully";
+
+      setSuccess({
+        isUpdate: wasUpdated,
+        message: wasUpdated
+          ? "Your resource needs have been updated successfully!"
+          : "Your resource needs have been submitted successfully!",
+      });
+
       // Reset form after successful submission
       setFormData({
         location: {
@@ -221,8 +235,8 @@ function SubmitResource() {
         <div
           style={{
             padding: "15px",
-            backgroundColor: "#d4edda",
-            color: "#155724",
+            backgroundColor: success.isUpdate ? "#cce5ff" : "#d4edda",
+            color: success.isUpdate ? "#004085" : "#155724",
             borderRadius: "5px",
             marginBottom: "20px",
             display: "flex",
@@ -230,8 +244,10 @@ function SubmitResource() {
             fontWeight: "bold",
           }}
         >
-          <span style={{ marginRight: "10px" }}>✅</span>
-          Your resource needs have been submitted successfully!
+          <span style={{ marginRight: "10px" }}>
+            {success.isUpdate ? "📝" : "✅"}
+          </span>
+          {success.message}
         </div>
       )}
 
