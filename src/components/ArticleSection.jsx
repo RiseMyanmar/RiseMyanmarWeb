@@ -15,6 +15,7 @@ function ArticleSection() {
         setLoading(true);
         setError(null);
 
+        
         // Fetch from our backend instead of directly from GNEWS
         const backendUrl = process.env.REACT_APP_BACKEND_URL;
         const res = await fetch(`${backendUrl}/api/news`);
