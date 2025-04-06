@@ -3,7 +3,10 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import StatsPanel from "./components/StatsPanel";
 import ArticleSection from "./components/ArticleSection";
 import DonationSection from "./components/DonationSection";
+import MapComponent from "./components/MapComponent";
+import './App.css';
 import SubmitResource from "./components/SubmitResources";
+
 
 function App() {
   return (
@@ -25,6 +28,20 @@ function App() {
           <Link to="/submit">Submit Resource</Link>
         </nav>
       </header>
+      
+    <Routes>
+      <Route path="/" element={
+      <div style={{ display: "flex", justifyContent: "center", gap: "2rem", flexWrap: "wrap" }}>
+        <main style={{ flex: "3 1 600px", display: "flex", flexDirection: "column", gap: "2rem" }}>
+          <ArticleSection />
+          <MapComponent />
+          <DonationSection />
+        </main>
+        <aside style={{ flex: "1 1 250px" }}>
+          <StatsPanel deaths={3848} injuries={4725} missing={708} />
+        </aside>
+      </div>
+      } />
 
       <Routes>
         <Route
