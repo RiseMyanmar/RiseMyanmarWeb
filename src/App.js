@@ -9,7 +9,6 @@ import "./App.css";
 import SubmitResource from "./components/SubmitResources";
 import { useLanguage } from "./components/LanguageContext";
 import { translateText } from "./components/translate";
-import ResourceList from "./components/ResourceList";
 
 function App() {
   const { lang } = useLanguage();
@@ -65,8 +64,6 @@ function App() {
 
                 {/* Map component immediately after stats panel */}
                 <MapComponent />
-
-                <ResourceList />
 
                 {/* Article section follows the map */}
                 <ArticleSection />

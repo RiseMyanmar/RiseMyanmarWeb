@@ -15,7 +15,6 @@ function ArticleSection() {
         setLoading(true);
         setError(null);
 
-        
         // Fetch from our backend instead of directly from GNEWS
         const backendUrl = process.env.REACT_APP_BACKEND_URL;
         const res = await fetch(`${backendUrl}/api/news`);
@@ -58,7 +57,9 @@ function ArticleSection() {
 
   return (
     <div style={{ marginTop: "2rem" }}>
-      <h2>📰 {lang === "en" ? "Latest Articles" : "နောက်ဆုံးရ သတင်းများ"}</h2>
+      <h2 className="article-section-heading">
+        {lang === "en" ? "Latest Articles" : "နောက်ဆုံးရ သတင်းများ"}
+      </h2>
 
       {loading && <p>Loading latest news...</p>}
       {error && <p style={{ color: "red" }}>Error loading news: {error}</p>}
@@ -67,7 +68,7 @@ function ArticleSection() {
         <p>No articles available at the moment.</p>
       )}
 
-      <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+      <div className="article-section-container">
         {articles.map((article, index) => (
           <ArticleCard
             key={index}
