@@ -5,68 +5,50 @@ import { translateText } from "./translate";
 
 function ArticleSection() {
   const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { lang } = useLanguage();
 
   useEffect(() => {
     async function fetchNews() {
-      const cached = localStorage.getItem("cachedArticles");
-      const cacheTime = localStorage.getItem("cachedTime");
-
-      const now = Date.now();
-      const oneDay = 24 * 60 * 60 * 1000;
-
-      if (cached && cacheTime && now - cacheTime < oneDay) {
-        const cachedData = JSON.parse(cached);
-        setArticles(cachedData);
-        return;
-      }
-
       try {
-        const res = await fetch(
-          `https://gnews.io/api/v4/search?q=myanmar%20earthquake&lang=en&country=us&max=10&apikey=${process.env.REACT_APP_GNEWS_API_KEY}`
-        );
+        setLoading(true);
+        setError(null);
+
+        // Fetch from our backend instead of directly from GNEWS
+        const backendUrl = process.env.REACT_APP_BACKEND_URL;
+        const res = await fetch(`${backendUrl}/api/news`);
+
+        if (!res.ok) {
+          throw new Error(`Failed to fetch news: ${res.status}`);
+        }
 
         const data = await res.json();
-        console.log("📰 Raw GNews response:", data);
+        console.log("📰 News from backend:", data);
 
-        if (!data.articles || !Array.isArray(data.articles)) {
-          console.error("❌ Invalid or missing articles from API:", data);
+        if (!Array.isArray(data) || data.length === 0) {
+          setArticles([]);
           return;
         }
 
-        const seenLinks = new Set();
-        const uniqueArticles = [];
-
-        for (const item of data.articles) {
-          if (item.image && !seenLinks.has(item.url)) {
-            seenLinks.add(item.url);
-            uniqueArticles.push({
-              title: item.title,
-              summary: item.description,
-              image: item.image,
-              link: item.url,
-            });
-          }
-
-          if (uniqueArticles.length === 4) break;
-        }
-
+        // Apply translations if needed
         const finalArticles =
           lang === "my"
             ? await Promise.all(
-                uniqueArticles.map(async (item) => ({
+                data.map(async (item) => ({
                   ...item,
                   title: await translateText(item.title, "my"),
                   summary: await translateText(item.summary, "my"),
                 }))
               )
-            : uniqueArticles;
+            : data;
 
         setArticles(finalArticles);
-        localStorage.setItem("cachedArticles", JSON.stringify(finalArticles));
-        localStorage.setItem("cachedTime", Date.now().toString());
       } catch (err) {
         console.error("❌ Failed to fetch news:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -76,6 +58,14 @@ function ArticleSection() {
   return (
     <div style={{ marginTop: "2rem" }}>
       <h2>📰 {lang === "en" ? "Latest Articles" : "နောက်ဆုံးရ သတင်းများ"}</h2>
+
+      {loading && <p>Loading latest news...</p>}
+      {error && <p style={{ color: "red" }}>Error loading news: {error}</p>}
+
+      {!loading && !error && articles.length === 0 && (
+        <p>No articles available at the moment.</p>
+      )}
+
       <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
         {articles.map((article, index) => (
           <ArticleCard
