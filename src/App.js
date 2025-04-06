@@ -8,6 +8,7 @@ import "./App.css";
 import SubmitResource from "./components/SubmitResources";
 import { useLanguage } from "./components/LanguageContext";
 import { translateText } from "./components/translate";
+import ResourceList from "./components/ResourceList";
 
 function App() {
   const { lang, setLang } = useLanguage();
@@ -96,6 +97,7 @@ function App() {
               >
                 <ArticleSection />
                 <MapComponent />
+                <ResourceList />
                 <DonationSection />
               </main>
               <aside style={{ flex: "1 1 250px" }}>

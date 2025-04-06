@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import DonationCard from "./DonationCard";
 import { translateText } from "./translate";
 import { useLanguage } from "./LanguageContext";
@@ -6,7 +6,8 @@ import { useLanguage } from "./LanguageContext";
 function DonationSection() {
   const { lang } = useLanguage();
 
-  const donationLinks = [
+  // Wrap donationLinks in useMemo to prevent recreation on every render
+  const donationLinks = useMemo(() => [
     {
       title: "Myanmar Earthquake Relief by Global Aid",
       description: "Supports emergency food, medical supplies, and shelter distribution in the hardest-hit areas.",
@@ -22,7 +23,7 @@ function DonationSection() {
       description: "Fund fuel, gear, and safety kits for community-based rescue teams working in dangerous zones.",
       link: "https://www.gofundme.com/f/myanmar-earthquake-relief-fundraising"
     }
-  ];
+  ], []); // Empty dependency array means this will only be created once
 
   const [translatedLinks, setTranslatedLinks] = useState(donationLinks);
   const [sectionTitle, setSectionTitle] = useState("💸 Donate to Trusted Campaigns");
@@ -35,7 +36,7 @@ function DonationSection() {
           donationLinks.map(async (item) => ({
             ...item,
             title: await translateText(item.title, "my"),
-            description: await translateText(item.description, "my")
+            description: await translateText(item.description, "my"),
           }))
         );
         setTranslatedLinks(translations);
@@ -47,7 +48,7 @@ function DonationSection() {
     }
 
     translateAll();
-  }, [lang]);
+  }, [lang, donationLinks]); // Added 'donationLinks' to the dependency array
 
   return (
     <div style={{ marginTop: "2rem" }}>
