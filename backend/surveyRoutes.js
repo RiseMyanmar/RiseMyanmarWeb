@@ -3,13 +3,50 @@ const router = express.Router();
 const Survey = require("./Survey");
 const mongoose = require("mongoose");
 
-// Create a new survey
+// Create or update a survey
 router.post("/", async (req, res) => {
   try {
     console.log("Received survey data:", req.body);
-    const survey = new Survey(req.body);
-    await survey.save();
-    res.status(201).json(survey);
+
+    // Check if a survey with the same organization and location exists
+    const existingSurvey = await Survey.findOne({
+      organization: req.body.organization,
+      "location.regionName": req.body.location.regionName,
+    });
+
+    let survey;
+
+    if (existingSurvey) {
+      // Update the existing survey
+      console.log(
+        `Updating existing survey for ${req.body.organization} at ${req.body.location.regionName}`
+      );
+
+      // Update all fields
+      existingSurvey.survivalItems = req.body.survivalItems;
+      existingSurvey.peopleInNeed = req.body.peopleInNeed;
+      // Don't update organization or location as they're the matching criteria
+
+      // Save the updated document
+      survey = await existingSurvey.save();
+
+      res.status(200).json({
+        message: "Survey updated successfully",
+        survey,
+      });
+    } else {
+      // Create a new survey
+      console.log(
+        `Creating new survey for ${req.body.organization} at ${req.body.location.regionName}`
+      );
+      survey = new Survey(req.body);
+      await survey.save();
+
+      res.status(201).json({
+        message: "Survey created successfully",
+        survey,
+      });
+    }
   } catch (error) {
     console.error("Error saving survey:", error);
     res.status(400).json({ message: error.message });

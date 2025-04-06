@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ path: "../.env" });
 const express = require("express");
 const mongoose = require("mongoose");
 const surveyRoutes = require("./surveyRoutes");
@@ -24,5 +24,5 @@ app.get("/test", (req, res) => {
   res.json({ message: "Test route works" });
 });
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.BACKPORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
