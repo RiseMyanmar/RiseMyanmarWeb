@@ -7,13 +7,30 @@ import './MapComponent.css';
 import { useLanguage } from "./LanguageContext";
 import { translateText } from "./translate";
 
-//mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
-mapboxgl.accessToken ='pk.eyJ1IjoibXBhaW5nIiwiYSI6ImNtOTRtYnlydzExY24yd29qMTQzZndxZHIifQ.ULUXEnBvCVlJKHv5J2kH7w'
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
+//mapboxgl.accessToken ='pk.eyJ1IjoibXBhaW5nIiwiYSI6ImNtOTRtYnlydzExY24yd29qMTQzZndxZHIifQ.ULUXEnBvCVlJKHv5J2kH7w'
 
 const MapComponent = () => {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const [loading, setLoading] = useState(true);
+  const [markersData, setMarkersData] = useState([]); // Store markers data from the backend
+
+    // Fetch data from the backend
+    const fetchMarkersData = async () => {
+      try {
+        const backendUrl = process.env.REACT_APP_BACKEND_URL;
+        const response = await fetch(`${backendUrl}/api/surveys`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch markers data');
+        }
+        const data = await response.json();
+        setMarkersData(data); // Store the fetched data
+      } catch (error) {
+        console.error('Error fetching markers data:', error);
+      }
+    };
+
   const { lang } = useLanguage();
   const [labels, setLabels] = useState({
     title: "🗺️ Interactive Map",
@@ -67,25 +84,29 @@ const MapComponent = () => {
 
     mapInstance.on('load', () => {
       setLoading(false);
-
-      // Define marker data for the locations
-      const markersData = [
-        { coordinates: [96.091, 21.979], title: 'Mandalay' },
-        { coordinates: [95.224, 22.034], title: 'Sagaing' },
-        { coordinates: [96.129, 19.75], title: 'Nay Pyi Taw' },
-      ];
-
-      // Add markers to the map
-      markersData.forEach((marker) => {
-        new mapboxgl.Marker({ color: 'red' })
-          .setLngLat(marker.coordinates)
-          .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<h3>${marker.title}</h3>`))
-          .addTo(mapInstance);
-      });
+      fetchMarkersData(); // Fetch markers data when the map loads
     });
 
     return () => mapInstance.remove();
   }, []);
+
+  useEffect(() => {
+    if (mapInstanceRef.current && markersData.length > 0) {
+      markersData.forEach((marker) => {
+        const popupContent = `
+          <h3>${marker.organization || 'Unknown Organization'}</h3>
+          <p><strong>Region:</strong> ${marker.location.regionName}</p>
+          <p><strong>People in Need:</strong> ${marker.peopleInNeed}</p>
+          <p><strong>Resources Needed:</strong> ${marker.survivalItems.join(', ')}</p>
+        `;
+
+        new mapboxgl.Marker({ color: 'red' })
+          .setLngLat(marker.location.coordinates)
+          .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(popupContent))
+          .addTo(mapInstanceRef.current);
+      });
+    }
+  }, [markersData]);
 
   const resetView = () => {
     if (mapInstanceRef.current) {
