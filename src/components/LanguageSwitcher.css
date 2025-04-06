@@ -1,0 +1,73 @@
+.language-switcher-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  padding-top: 1.5rem;
+}
+
+.language-toggle {
+  position: relative;
+  display: flex;
+  border-radius: 30px;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  padding: 4px;
+  min-width: 220px;
+  height: 42px;
+  transition: all 0.3s ease;
+}
+
+.language-toggle:hover {
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.language-option {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  border-radius: 26px;
+  transition: color 0.3s ease;
+  user-select: none;
+  letter-spacing: 0.3px;
+}
+
+.language-option.active {
+  color: #212529;
+}
+
+.language-toggle-pill {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  height: calc(100% - 8px);
+  width: calc(50% - 4px);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 26px;
+  transition: transform 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.language-toggle[data-active="my"] .language-toggle-pill {
+  transform: translateX(100%);
+}
+
+/* For the Apple-like appearance of the entire page */
+body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #eef2f7 100%);
+  color: #212529;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}

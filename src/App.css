@@ -37,4 +37,238 @@
   }
 }
 
+/* Base styles */
+.app-container {
+  padding: 0 2rem 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  /* Updated background with a subtle gradient */
+  background: linear-gradient(135deg, #e0e5ec 0%, #d7dee8 100%);
+  min-height: 100vh;
+  color: #212529;
+}
 
+/* Header styles */
+header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Update header h1 styles */
+header h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+}
+
+header p {
+  color: #555;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+}
+
+/* Add responsive styling for mobile devices */
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.8rem; /* Reduce font size on small screens */
+    white-space: nowrap; /* Prevent line breaks in the title */
+    overflow: hidden; /* In case the text is too long */
+    text-overflow: ellipsis; /* Add ellipsis if text overflows */
+  }
+
+  header p {
+    font-size: 1rem; /* Also reduce the description font size */
+  }
+
+  .language-toggle {
+    min-width: 180px; /* Make the language switcher a bit smaller too */
+  }
+}
+
+/* For even smaller screens */
+@media (max-width: 360px) {
+  header h1 {
+    font-size: 1.6rem;
+  }
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: #1a73e8;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+nav a:hover {
+  background-color: rgba(26, 115, 232, 0.1);
+}
+
+/* Main content layout */
+.main-content {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.content-area {
+  flex: 3 1 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.stats-area {
+  flex: 1 1 250px;
+}
+
+/* Typography and components improvements */
+h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #212529;
+  letter-spacing: -0.5px;
+}
+
+/* Card shadows and borders */
+[style*="border: 1px solid #ddd"] {
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+  background: white !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+[style*="border: 1px solid #ddd"]:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Button styles */
+button {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.3px !important;
+  transition: all 0.2s ease !important;
+}
+
+button:hover {
+  transform: translateY(-1px) !important;
+}
+
+/* Stats circles styling */
+.stats-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+.stats-circles {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+}
+
+.stat-circle:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+/* Update the stats circles with slightly darker, less contrasting colors */
+.stat-deaths {
+  background: linear-gradient(135deg, #ff7070, #e64a4a);
+}
+
+.stat-injuries {
+  background: linear-gradient(135deg, #ffcd70, #ffc547);
+}
+
+.stat-missing {
+  background: linear-gradient(135deg, #8bc68f, #57a85c);
+}
+
+/* Mobile responsiveness for stats circles */
+@media (max-width: 600px) {
+  .stats-circles {
+    gap: 1rem;
+  }
+
+  .stat-circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .stat-circle {
+    width: 90px;
+    height: 90px;
+  }
+
+  .stat-value {
+    font-size: 1.3rem;
+  }
+}
+
+/* Create a new gradient text class */
+.gradient-text {
+  background: linear-gradient(90deg, #1a73e8, #5c9ef7);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Style for the flag emoji */
+.flag-emoji {
+  font-size: 2.5rem; /* Match the h1 font size */
+}
