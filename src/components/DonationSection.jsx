@@ -15,12 +15,12 @@ function DonationSection() {
     {
       title: "Shelter for Displaced Families",
       description: "Helps build temporary housing for families who lost their homes in the Mandalay region.",
-      link: "https://www.some-org.org/donate"
+      link: "https://www.unicefusa.org/stories/powerful-earthquake-rocks-myanmar?form=FUNMTANMDRJ&utm_source=sem&utm_medium=cpc&utm_campaign=_dep-re_vendor-delve_aoma-ao_mcapm-202503MTEarthquakeER&initialms=_source-sem_medium-cpc_campaign-_dep-re_vendor-delve_aoma-ao_mcapm-202503MTEarthquakeER_yeardate-fy25_aud-ma&gad_source=1&gbraid=0AAAAAD3Kj51SqoTFEjAojiNtn-zs2dSIt&gclid=CjwKCAjwzMi_BhACEiwAX4YZUD-8olmfmmV7jq9ggKjc7K8OaPvw133Q9TV5D4MJE_jdwQMHLMNCAxoC7rMQAvD_BwE"
     },
     {
       title: "Support Local Rescuers",
       description: "Fund fuel, gear, and safety kits for community-based rescue teams working in dangerous zones.",
-      link: "https://rescuemyanmar.org/donate"
+      link: "https://www.gofundme.com/f/myanmar-earthquake-relief-fundraising"
     }
   ];
 
