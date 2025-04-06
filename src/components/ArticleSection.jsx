@@ -12,6 +12,7 @@ function ArticleSection() {
       const res = await fetch(
         `https://gnews.io/api/v4/search?q=myanmar%20earthquake&lang=en&country=us&max=10&apikey=${process.env.REACT_APP_GNEWS_API_KEY}`
       );
+
       const data = await res.json();
 
       const seenLinks = new Set();
