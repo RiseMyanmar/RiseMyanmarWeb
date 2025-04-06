@@ -1,13 +1,110 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+/* Myanmar font adjustments to match English size */
+[lang="my"],
+:lang(my),
+.my-text,
+html[lang="my"] body {
+  /* Reduce font size for Burmese text by about 30% to match perceived size of English */
+  font-size: 0.5em;
+  /* Adjust line height slightly to ensure proper display */
+  line-height: 1.5;
+  /* Use Myanmar-specific fonts first in the stack */
+  font-family: "Noto Sans Myanmar", "Pyidaungsu", "Myanmar Text", sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* Ensure specific elements scale properly with Burmese text */
+html[lang="my"] h1 {
+  font-size: calc(2.5rem * 0.5);
+  letter-spacing: -0.02em;
+}
+
+html[lang="my"] h2 {
+  font-size: calc(1.8rem * 0.5);
+  letter-spacing: -0.01em;
+}
+
+html[lang="my"] p {
+  font-size: calc(1rem * 0.5);
+}
+
+html[lang="my"] .stat-value {
+  font-size: calc(1.8rem * 0.5);
+}
+
+html[lang="my"] .stat-label {
+  font-size: calc(0.95rem * 0.5);
+}
+
+html[lang="my"] button,
+html[lang="my"] .reset-button {
+  font-size: calc(0.9rem * 0.5);
+}
+
+html[lang="my"] nav a {
+  font-size: calc(1rem * 0.5);
+}
+
+/* Additional selectors for form elements to ensure consistent sizing */
+html[lang="my"] input,
+html[lang="my"] .form-input,
+html[lang="my"] .checkbox-label {
+  font-size: calc(1rem * 0.5);
+}
+
+html[lang="my"] .language-option {
+  font-size: calc(14px * 0.5);
+}
+
+html[lang="my"] .form-label {
+  font-size: calc(1.1rem * 0.5);
+}
+
+html[lang="my"] .welcome-message {
+  font-size: calc(1.1rem * 0.5);
+}
+
+/* Make form titles smaller in Burmese */
+html[lang="my"] .form-title {
+  font-size: calc(1.8rem * 0.5);
+}
+
+/* Add specific adjustments for the language switcher */
+html[lang="my"] .language-toggle .language-option {
+  font-size: calc(14px * 0.5);
+  transform: scale(0.9);
+}
+
+/* Make article titles smaller in Burmese */
+html[lang="my"] h3 {
+  font-size: calc(1.1rem * 0.5);
+  letter-spacing: -0.01em;
+}
+
+/* Make popup text smaller in Burmese */
+html[lang="my"] .mapboxgl-popup-content {
+  font-size: calc(1rem * 0.5);
+}
+
+/* Make sure specific areas with common sizing issues are addressed */
+html[lang="my"] .checkbox-container .checkbox-label {
+  font-size: calc(1rem * 0.5);
+}
+
+html[lang="my"] .success-message,
+html[lang="my"] .error-message {
+  font-size: calc(1rem * 0.5);
 }

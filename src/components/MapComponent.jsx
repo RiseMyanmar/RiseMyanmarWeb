@@ -1,4 +1,4 @@
-import "mapbox-gl/dist/mapbox-gl.css"; // Add this line at the very top
+import "mapbox-gl/dist/mapbox-gl.css";
 
 import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
@@ -15,6 +15,10 @@ const MapComponent = () => {
   const [loading, setLoading] = useState(true);
   const [markersData, setMarkersData] = useState([]);
   const { lang } = useLanguage();
+
+  // Myanmar's center coordinates and zoom level for country-wide view
+  const myanmarCenter = [96.5, 19.75]; // Center of Myanmar
+  const countryZoomLevel = 5.5; // Zoom level to see most of Myanmar
 
   // Add these translation state variables
   const [popupLabels, setPopupLabels] = useState({
@@ -123,13 +127,13 @@ const MapComponent = () => {
     }
   };
 
-  // Initialize map
+  // Initialize map with Myanmar-centered view
   useEffect(() => {
     const mapInstance = new mapboxgl.Map({
       container: mapContainerRef.current,
       style: "mapbox://styles/mapbox/streets-v11",
-      center: [96.1345, 16.8661],
-      zoom: 10,
+      center: myanmarCenter, // Updated to center on Myanmar
+      zoom: countryZoomLevel, // Updated to show all of Myanmar
     });
 
     mapInstance.addControl(new mapboxgl.NavigationControl(), "top-right");
@@ -204,7 +208,7 @@ const MapComponent = () => {
 
         const popupContent = `
           <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-            <h3 style="font-size: 1.1rem; font-weight: 600; color: #d32f2f; margin-bottom: 10px; font-family: 'Georgia', serif;">
+            <h3 style="font-size: 1.1rem; font-weight: 600; color: #1a73e8; margin-bottom: 10px; font-family: 'Georgia', serif;">
               ${popupLabels.region}: ${marker.location.regionName}
             </h3>
             <p style="margin: 6px 0; font-size: 0.95rem;">
@@ -219,7 +223,7 @@ const MapComponent = () => {
           </div>
         `;
 
-        const markerInstance = new mapboxgl.Marker({ color: "red" })
+        const markerInstance = new mapboxgl.Marker({ color: "#1a73e8" })
           .setLngLat(marker.location.coordinates)
           .setPopup(
             new mapboxgl.Popup({
@@ -235,37 +239,28 @@ const MapComponent = () => {
     }
   }, [markersData, lang, popupLabels, resourceTranslations]);
 
-  const [labels, setLabels] = useState({
-    title: "🗺️ Interactive Map",
-    tooltip: "Explore the affected areas and key locations.",
-  });
+  const [resetButtonLabel, setResetButtonLabel] = useState("Reset View");
 
   useEffect(() => {
-    async function translateLabels() {
+    async function translateResetButton() {
       if (lang === "my") {
-        const [translatedTitle, translatedTooltip] = await Promise.all([
-          translateText("🗺️ Interactive Map", "my"),
-          translateText("Explore the affected areas and key locations.", "my"),
-        ]);
-
-        setLabels({
-          title: translatedTitle,
-          tooltip: translatedTooltip,
-        });
+        const translatedReset = await translateText("Reset View", "my");
+        setResetButtonLabel(translatedReset);
       } else {
-        setLabels({
-          title: "🗺️ Interactive Map",
-          tooltip: "Explore the affected areas and key locations.",
-        });
+        setResetButtonLabel("Reset View");
       }
     }
 
-    translateLabels();
+    translateResetButton();
   }, [lang]);
 
+  // Updated to reset to Myanmar country-wide view
   const resetView = () => {
     if (mapInstanceRef.current) {
-      mapInstanceRef.current.flyTo({ center: [96.1345, 16.8661], zoom: 10 });
+      mapInstanceRef.current.flyTo({
+        center: myanmarCenter,
+        zoom: countryZoomLevel,
+      });
     } else {
       console.error("Map instance is not initialized.");
     }
@@ -273,12 +268,10 @@ const MapComponent = () => {
 
   return (
     <div className="map-wrapper">
-      <h2>{labels.title}</h2>
-      <p>{labels.tooltip}</p>
       {loading && <div className="loading-spinner">Loading map...</div>}
       <div ref={mapContainerRef} className="map-container"></div>
       <button className="reset-button" onClick={resetView}>
-        {lang === "en" ? "Reset View" : "မြင်ကွင်းပြန်ညှိရန်"}
+        {resetButtonLabel}
       </button>
     </div>
   );
