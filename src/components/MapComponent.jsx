@@ -4,6 +4,8 @@ import 'mapbox-gl/dist/mapbox-gl.css'; // Add this line at the very top
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import './MapComponent.css';
+import { useLanguage } from "./LanguageContext";
+import { translateText } from "./translate";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 //mapboxgl.accessToken ='pk.eyJ1IjoibXBhaW5nIiwiYSI6ImNtOTRtYnlydzExY24yd29qMTQzZndxZHIifQ.ULUXEnBvCVlJKHv5J2kH7w'
@@ -28,6 +30,35 @@ const MapComponent = () => {
         console.error('Error fetching markers data:', error);
       }
     };
+
+  const { lang } = useLanguage();
+  const [labels, setLabels] = useState({
+    title: "🗺️ Interactive Map",
+    tooltip: "Explore the affected areas and key locations.",
+  });
+
+  useEffect(() => {
+    async function translateLabels() {
+      if (lang === "my") {
+        const [translatedTitle, translatedTooltip] = await Promise.all([
+          translateText("🗺️ Interactive Map", "my"),
+          translateText("Explore the affected areas and key locations.", "my"),
+        ]);
+
+        setLabels({
+          title: translatedTitle,
+          tooltip: translatedTooltip,
+        });
+      } else {
+        setLabels({
+          title: "🗺️ Interactive Map",
+          tooltip: "Explore the affected areas and key locations.",
+        });
+      }
+    }
+
+    translateLabels();
+  }, [lang]);
 
   useEffect(() => {
     const mapInstance = new mapboxgl.Map({
@@ -87,8 +118,8 @@ const MapComponent = () => {
 
   return (
     <div className="map-wrapper">
-      <h2>🗺️ Interactive Map</h2>
-      <p>Explore the affected areas and key locations.</p>
+      <h2>{labels.title}</h2>
+      <p>{labels.tooltip}</p>
       {loading && <div className="loading-spinner">Loading map...</div>}
       <div ref={mapContainerRef} className="map-container" ></div>
       <button className="reset-button" onClick={resetView}>Reset View</button>
