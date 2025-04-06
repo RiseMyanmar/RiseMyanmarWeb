@@ -47,7 +47,7 @@ function App() {
       }}
     >
       <header style={{ marginBottom: "2rem", textAlign: "center" }}>
-        <h1>🌏 {title}</h1>
+        <h1>🌏 {title} 🇲🇲</h1>
         <p style={{ color: "#555" }}>{description}</p>
         <nav>
           <Link to="/" style={{ marginRight: "1rem" }}>
