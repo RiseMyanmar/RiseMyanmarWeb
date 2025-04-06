@@ -62,8 +62,34 @@ function SubmitResource() {
     );
   }
 
+  const fetchCoordinates = async (address) => {
+    try {
+      const apiKey = process.env.REACT_APP_GOOGLE_API_KEY; // Use your Google API key
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+          address
+        )}&key=${apiKey}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch coordinates");
+      }
+
+      const data = await response.json();
+
+      if (data.results.length > 0) {
+        const { lat, lng } = data.results[0].geometry.location;
+        return [lng, lat]; // Return coordinates as [longitude, latitude]
+      } else {
+        throw new Error("No results found for the given address");
+      }
+    } catch (error) {
+      console.error("Error fetching coordinates:", error);
+      return [0, 0]; // Default coordinates if an error occurs
+    }
+  };
   // Update the handleChange function to properly handle peopleInNeed
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { name, value, type, checked } = e.target;
 
     if (name === "address") {
@@ -74,6 +100,18 @@ function SubmitResource() {
           address: value,
         },
       });
+
+      // Fetch coordinates when the address is updated
+      if (value.trim() !== "") {
+        const coordinates = await fetchCoordinates(value);
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          location: {
+            ...prevFormData.location,
+            coordinates,
+          },
+        }));
+      }
     } else if (name === "peopleInNeed") {
       // Only allow digits (0-9)
       const digitsOnly = value.replace(/\D/g, "");
