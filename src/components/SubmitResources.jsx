@@ -62,7 +62,7 @@ function SubmitResource() {
     );
   }
 
-  // Update the handleChange function to properly handle peopleInNeed
+  // Complete the handleChange function
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -75,12 +75,8 @@ function SubmitResource() {
         },
       });
     } else if (name === "peopleInNeed") {
-      // Only allow digits (0-9)
       const digitsOnly = value.replace(/\D/g, "");
-
-      // Convert to number (will be 0 if input is empty)
       const numValue = digitsOnly === "" ? 0 : parseInt(digitsOnly, 10);
-
       setFormData({
         ...formData,
         peopleInNeed: numValue,

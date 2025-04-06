@@ -10,9 +10,8 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.PORT
-      ? `http://localhost:${process.env.PORT}`
-      : "http://localhost:8000",
+    // Allow connections from any origin in development
+    origin: "*", // For development only - restrict this in production
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })

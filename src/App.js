@@ -1,5 +1,3 @@
-import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import StatsPanel from "./components/StatsPanel";
@@ -73,7 +71,6 @@ function App() {
           {lang === "en" ? "မြန်မာစာ" : "English"}
         </button>
       </header>
-
       <Routes>
         <Route
           path="/"
@@ -95,6 +92,7 @@ function App() {
                 }}
               >
                 <ArticleSection />
+                <MapComponent />
                 <DonationSection />
               </main>
               <aside style={{ flex: "1 1 250px" }}>
@@ -103,6 +101,7 @@ function App() {
             </div>
           }
         />
+
         <Route path="/submit" element={<SubmitResource />} />
       </Routes>
     </div>
