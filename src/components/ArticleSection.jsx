@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import ArticleCard from "./ArticleCard";
+import { useLanguage } from "./LanguageContext";
+import { translateText } from "./translate";
 
 function ArticleSection() {
   const [articles, setArticles] = useState([]);
+  const { lang } = useLanguage();
 
   useEffect(() => {
     async function fetchNews() {
       const res = await fetch(
-        `https://gnews.io/api/v4/search?q=myanmar%20earthquake&lang=en&country=us&max=10&apikey=48bfa8a4c588aa2886ca7e33d0ba70a9`
+        `https://gnews.io/api/v4/search?q=myanmar%20earthquake&lang=en&country=us&max=10&apikey=${process.env.REACT_APP_GNEWS_API_KEY}`
       );
       const data = await res.json();
 
@@ -28,15 +31,27 @@ function ArticleSection() {
         if (uniqueArticles.length === 4) break;
       }
 
-      setArticles(uniqueArticles);
+      // ✅ Translate articles if language is "my"
+      if (lang === "my") {
+        const translated = await Promise.all(
+          uniqueArticles.map(async (item) => ({
+            ...item,
+            title: await translateText(item.title, "my"),
+            summary: await translateText(item.summary, "my")
+          }))
+        );
+        setArticles(translated);
+      } else {
+        setArticles(uniqueArticles);
+      }
     }
 
     fetchNews();
-  }, []);
+  }, [lang]);
 
   return (
     <div style={{ marginTop: "2rem" }}>
-      <h2>📰 Latest Articles</h2>
+      <h2>📰 {lang === "en" ? "Latest Articles" : "နောက်ဆုံးရ သတင်းများ"}</h2>
       <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
         {articles.map((article, index) => (
           <ArticleCard
