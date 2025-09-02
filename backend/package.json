@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "0.1.0",
-  "description": "user survey",
+  "description": "Backend API server for Help Myanmar Rise - handles resource tracking, news aggregation, and survey data for earthquake relief coordination",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

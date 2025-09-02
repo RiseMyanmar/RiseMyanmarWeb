@@ -1,6 +1,7 @@
 {
   "name": "help-myanmar-rise",
   "version": "0.1.0",
+  "description": "Open-source web platform coordinating Myanmar earthquake relief through real-time resource tracking, interactive mapping, and community collaboration",
   "private": true,
   "dependencies": {
     "@auth0/auth0-react": "^2.3.0",
